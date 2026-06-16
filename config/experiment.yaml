@@ -1,0 +1,134 @@
+project:
+  name: noise_robustness_depression
+  results_dir: results
+
+data:
+  datasets_dir: datasets_textos_depresivos
+  text_column: text
+  label_column: manual_classification
+  id_column: id
+  datasets:
+    - original
+    - sin_emojis
+    - sin_numeros
+    - solo_minusculas
+    - solo_mayusculas
+    - abreviaciones
+    - sin_acentos
+    - sin_puntuacion
+    - sin_acentos_sin_puntuacion
+    - insertar_letras
+    - swap_letras
+    - error_teclado
+    - eliminar_letras
+    - slang
+    - stemming
+    - ruido_combinado
+    - lematizado
+    - sin_stopwords
+
+cv:
+  split: kfold
+  n_folds: 5
+  fold_seed: 42
+  test_size: 0.2
+  split_seed: 42
+  train_seeds: [42, 123, 456]
+
+text:
+  max_length: 512
+  truncation: true
+
+sklearn:
+  logistic_regression:
+    C: 1.0
+    max_iter: 1000
+    class_weight: balanced
+    solver: lbfgs
+  linear_svm:
+    C: 1.0
+    class_weight: balanced
+    max_iter: 5000
+
+finetune:
+  learning_rate: 2.0e-5
+  batch_size: 8
+  num_epochs: 10
+  early_stopping_patience: 2
+  val_split: 0.1
+  train_fraction: 1.0
+  weight_decay: 0.01
+  warmup_ratio: 0.1
+  metric_for_best: macro_f1
+  val_seed: 42
+
+tfidf:
+  max_features: 50000
+  ngram_range: [1, 2]
+  min_df: 2
+  sublinear_tf: true
+
+fasttext:
+  model_url: https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.es.300.bin.gz
+  model_filename: cc.es.300.bin
+  cache_dir: results/cache/fasttext
+
+transformers:
+  bert: bert-base-uncased
+  roberta: roberta-base
+  deberta: microsoft/deberta-v3-base
+  distilbert: distilbert-base-uncased
+  mbert: bert-base-multilingual-cased
+  xlmr: xlm-roberta-base
+
+sentence_transformer:
+  mpnet: sentence-transformers/all-mpnet-base-v2
+
+models:
+  - tfidf_lr
+  - tfidf_svm
+  - fasttext_lr
+  - fasttext_svm
+  - mpnet_lr
+  - mpnet_svm
+  - bert_fe_lr
+  - bert_fe_svm
+  - roberta_fe_lr
+  - roberta_fe_svm
+  - deberta_fe_lr
+  - deberta_fe_svm
+  - distilbert_fe_lr
+  - distilbert_fe_svm
+  - mbert_fe_lr
+  - mbert_fe_svm
+  - xlmr_fe_lr
+  - xlmr_fe_svm
+  - bert_ft
+  - roberta_ft
+  - deberta_ft
+  - distilbert_ft
+  - mbert_ft
+  - xlmr_ft
+
+metrics:
+  primary: macro_f1
+  all:
+    - accuracy
+    - precision
+    - recall
+    - f1
+    - macro_f1
+    - weighted_f1
+    - roc_auc
+    - mcc
+    - balanced_accuracy
+
+statistics:
+  alpha: 0.05
+
+plots:
+  dpi: 300
+  figsize_heatmap: [18, 14]
+  figsize_bar: [14, 8]
+  figsize_box: [16, 10]
+  figsize_cd: [14, 10]

@@ -1,0 +1,18 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.DS_Store
+
+results/folds/
+results/checkpoints.json
+results/cache/
+results/.matplotlib/
+results/figures/
+results/statistics/
+results/tables/
+results/discussion/
+results/results_summary.*
+
+# Keep directory structure
+!results/.gitkeep

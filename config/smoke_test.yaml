@@ -1,0 +1,16 @@
+# Smoke test overrides — faster validation on M4
+cv:
+  n_folds: 5
+  fold_seed: 42
+  train_seeds: [42]
+
+finetune:
+  learning_rate: 2.0e-5
+  batch_size: 8
+  num_epochs: 2
+  early_stopping_patience: 1
+  val_split: 0.1
+  weight_decay: 0.01
+  warmup_ratio: 0.1
+  metric_for_best: macro_f1
+  val_seed: 42
